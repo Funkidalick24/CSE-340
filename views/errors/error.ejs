@@ -1,0 +1,11 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<div class="error-container">
+  <h2>Server Error</h2>
+  <p>Sorry, there was an error: <%= message %></p>
+  <p>Please try again later or contact support if the problem persists.</p>
+</div>
