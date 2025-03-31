@@ -1,6 +1,9 @@
 <% if (title) { %>
   <footer>
     <p class="copyright">© <%= new Date().getFullYear() %> CSE 340 App</p>
-    <a href="/error/trigger" class="error-link">Trigger Error</a>
+    <div class="error-links">
+      <a href="/error/trigger-404" class="error-link">404 Error</a>
+      <a href="/error/trigger-500" class="error-link">500 Error</a>
+    </div>
   </footer>
 <% } %>

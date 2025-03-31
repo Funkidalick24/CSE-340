@@ -80,4 +80,16 @@ Util.buildVehicleDetail = function(vehicle){
   return html;
 }
 
+/* ****************************************
+* Middleware For Handling Messages
+**************************************** */
+Util.checkMessages = (req, res, next) => {
+  res.locals.messages = {
+    notice: req.flash("notice"),
+    error: req.flash("error"),
+    success: req.flash("success")
+  }
+  next()
+}
+
 module.exports = Util

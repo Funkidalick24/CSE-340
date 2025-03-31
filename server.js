@@ -14,6 +14,29 @@ const expressLayouts = require("express-ejs-layouts")
 const baseController = require("./controllers/baseController")
 const errorRoute = require("./routes/errorRoute")
 const errorMiddleware = require("./middleware/error-middleware")
+const session = require("express-session")
+const pool = require('./database/')
+
+/* ***********************
+ * Middleware
+ * ************************/
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+// Express Messages Middleware
+app.use(require('connect-flash')())
+app.use(function(req, res, next){
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
+
 
 /* ***********************
  * Routes
@@ -32,6 +55,8 @@ app.use("/inv", inventoryRoute)
 
 // Route usage
 app.use("/error", errorRoute)
+
+
 
 // Error handling middleware - must be last
 app.use(errorMiddleware.logError)
