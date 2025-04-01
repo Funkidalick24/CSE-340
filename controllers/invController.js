@@ -41,4 +41,107 @@ invCont.buildByInventoryId = async function (req, res, next) {
   }
 }
 
+invCont.buildAddClassification = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav()
+    res.render("inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      messages: res.locals.messages,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+invCont.addClassification = async function (req, res, next) {
+  try {
+    const { classification_name } = req.body
+    const result = await invModel.addClassification(classification_name)
+
+    if (result.rowCount > 0) {
+      req.flash("success", "Classification added successfully.")
+      return res.redirect("/inv")
+    } else {
+      req.flash("error", "Failed to add classification.")
+      return res.redirect("/inv/add-classification")
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+invCont.buildAddInventory = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav()
+    let classificationList = await utilities.buildClassificationList()
+    res.render("inventory/add-inventory", {
+      title: "Add Inventory",
+      nav,
+      classificationList,
+      messages: res.locals.messages,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+invCont.addInventory = async function (req, res, next) {
+  try {
+    const {
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color
+    } = req.body
+
+    const result = await invModel.addInventory(
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color
+    )
+
+    if (result.rowCount > 0) {
+      req.flash("success", "Vehicle added successfully.")
+      return res.redirect("/inv")
+    } else {
+      req.flash("error", "Failed to add vehicle.")
+      return res.redirect("/inv/add-inventory")
+    }
+  } catch (error) {
+    console.error("Error in addInventory:", error)
+    next(error)
+  }
+}
+
+/* ****************************************
+*  Build management view
+* *************************************** */
+invCont.buildManagement = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav()
+    res.render("inventory/management", {
+      title: "Vehicle Management",
+      nav,
+      errors: null,
+      messages: res.locals.messages
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = invCont

@@ -1,0 +1,24 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<%- messages() %>
+
+<form action="/inv/add-classification" method="post" class="form">
+  <div class="form-group">
+    <label for="classification_name">Classification Name:</label>
+    <input
+      type="text"
+      id="classification_name"
+      name="classification_name"
+      required
+      pattern="^[a-zA-Z0-9]+$"
+      title="Classification name must not contain spaces or special characters."
+    >
+  </div>
+  <div class="form-actions">
+    <button type="submit">Add Classification</button>
+  </div>
+</form>

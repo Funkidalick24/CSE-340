@@ -16,23 +16,30 @@ const errorRoute = require("./routes/errorRoute")
 const errorMiddleware = require("./middleware/error-middleware")
 const session = require("express-session")
 const pool = require('./database/')
+const accountRoute = require("./routes/accountRoute")
 
 /* ***********************
  * Middleware
- * ************************/
+ *************************/
+// Body Parser Middleware
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+// Session Middleware
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
     pool,
   }),
   secret: process.env.SESSION_SECRET,
-  resave: true,
+  resave: false,
   saveUninitialized: true,
   name: 'sessionId',
 }))
-// Express Messages Middleware
+
+// Flash Message Middleware
 app.use(require('connect-flash')())
-app.use(function(req, res, next){
+app.use((req, res, next) => {
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
@@ -53,6 +60,9 @@ app.get("/", baseController.buildHome)
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
+// Account routes
+app.use("/account", accountRoute)
+
 // Route usage
 app.use("/error", errorRoute)
 
@@ -61,6 +71,7 @@ app.use("/error", errorRoute)
 // Error handling middleware - must be last
 app.use(errorMiddleware.logError)
 app.use(errorMiddleware.handleError)
+
 
 // Catch 404 and forward to error handler
 app.use(async (req, res, next) => {
