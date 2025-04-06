@@ -17,13 +17,19 @@ const errorMiddleware = require("./middleware/error-middleware")
 const session = require("express-session")
 const pool = require('./database/')
 const accountRoute = require("./routes/accountRoute")
+const cookieParser = require("cookie-parser")
+const utilities = require("./utilities/index")
 
 /* ***********************
  * Middleware
  *************************/
-// Body Parser Middleware
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Static Routes
+app.use(static)
+app.use(express.static("public"))
 
 // Session Middleware
 app.use(session({
@@ -37,12 +43,17 @@ app.use(session({
   name: 'sessionId',
 }))
 
+app.use(utilities.checkJWTToken)
+
+
 // Flash Message Middleware
 app.use(require('connect-flash')())
 app.use((req, res, next) => {
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+// cookie parser middleware
+app.use(cookieParser())
 
 
 /* ***********************
