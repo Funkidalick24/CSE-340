@@ -19,14 +19,14 @@ accountModel.registerAccount = async function(account_firstname, account_lastnam
 /* *****************************
 * Return account data using email address
 * ***************************** */
-accountModel.getAccountByEmail = async function(account_email) {
+accountModel.getAccountByEmail = async function (account_email) {
   try {
-    const result = await pool.query(
-      'SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password FROM account WHERE account_email = $1',
-      [account_email])
+    const sql = 'SELECT * FROM account WHERE account_email = $1'
+    const result = await pool.query(sql, [account_email])
     return result.rows[0]
   } catch (error) {
-    return new Error("No matching email found")
+    console.error("getAccountByEmail error: " + error)
+    return null
   }
 }
 

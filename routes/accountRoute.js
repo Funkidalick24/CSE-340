@@ -8,19 +8,19 @@ const accController = require("../controllers/accController")
 router.get("/", utilities.checkLogin, utilities.handleErrors(accController.buildManagement))
 
 // Route to build login view
-router.get("/login", (req, res, next) => {
-  utilities.handleErrors(accController.buildLogin)(req, res, next)
-})
+router.get("/login", utilities.handleErrors(accController.buildLogin))
 
 // Process the login request
 router.post(
   "/login",
   validate.loginRules(),
   validate.checkLoginData,
-  (req, res, next) => {
-    utilities.handleErrors(accController.loginAccount)(req, res, next)
-  }
+  utilities.handleErrors(accController.loginAccount)
 )
+
+// Add management route
+router.get("/management", utilities.checkLogin, utilities.handleErrors(accController.buildAccountManagement))
+
 // Registration routes
 router.get("/register", utilities.handleErrors(accController.buildRegister))
 

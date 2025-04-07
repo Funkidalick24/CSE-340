@@ -19,6 +19,7 @@ const pool = require('./database/')
 const accountRoute = require("./routes/accountRoute")
 const cookieParser = require("cookie-parser")
 const utilities = require("./utilities/index")
+const flash = require('connect-flash')
 
 /* ***********************
  * Middleware
@@ -38,18 +39,33 @@ app.use(session({
     pool,
   }),
   secret: process.env.SESSION_SECRET,
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   name: 'sessionId',
+  cookie: {
+    secure: false,
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 // 24 hours
+  }
 }))
 
 app.use(utilities.checkJWTToken)
 
 
 // Flash Message Middleware
-app.use(require('connect-flash')())
+app.use(flash())
 app.use((req, res, next) => {
-  res.locals.messages = require('express-messages')(req, res)
+  res.locals.messages = messages = () => {
+    const messages = req.flash()
+    const messageTypes = Object.keys(messages)
+    let messagesList = []
+    messageTypes.forEach(type => {
+      messages[type].forEach(message => {
+        messagesList.push(`<div class='flash-message ${type}'>${message}</div>`)
+      })
+    })
+    return messagesList.length ? messagesList.join('') : null
+  }
   next()
 })
 // cookie parser middleware

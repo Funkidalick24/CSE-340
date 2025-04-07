@@ -1,6 +1,7 @@
 const utilities = require("../utilities")
 const accountModel = require("../models/account-model")
 const jwt = require("jsonwebtoken")
+const bcryptjs = require("bcryptjs") // Changed from bcrypt to bcryptjs
 require("dotenv").config()
 
 const accController = {}
@@ -27,14 +28,56 @@ accController.buildLogin = async function(req, res, next) {
 * *************************************** */
 accController.loginAccount = async function(req, res, next) {
   try {
+    const { account_email, account_password } = req.body
+    
+    if (!account_email || !account_password) {
+      req.flash("notice", "Please provide both email and password")
+      let nav = await utilities.getNav()
+      return res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+        messages: res.locals.messages,
+      })
+    }
+
+    const accountData = await accountModel.getAccountByEmail(account_email)
+
+    if (!accountData) {
+      req.flash("notice", "Please check your credentials and try again.")
+      let nav = await utilities.getNav()
+      return res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+        messages: res.locals.messages,
+      })
+    }
+
+    const passwordMatch = await bcryptjs.compare(account_password, accountData.account_password)
+
+    if (passwordMatch) {
+      delete accountData.account_password
+      req.session.accountData = accountData
+      res.locals.accountData = accountData
+      req.flash("success", "Logged in successfully")
+      return res.redirect("/account")
+    }
+
+    req.flash("notice", "Please check your credentials and try again.")
     let nav = await utilities.getNav()
-    res.render("account/login", {
+    return res.status(400).render("account/login", {
       title: "Login",
       nav,
       errors: null,
-      messages: res.locals.messages
+      account_email,
+      messages: res.locals.messages,
     })
+
   } catch (error) {
+    console.error("Login error:", error)
     next(error)
   }
 }
@@ -89,58 +132,19 @@ accController.registerAccount = async function(req, res, next) {
 }
 
 /* ****************************************
- *  Process login request
- * ************************************ */
-accController.loginAccount = async function(req, res) {
-  let nav = await utilities.getNav()
-  const { account_email, account_password } = req.body
-  const accountData = await accountModel.getAccountByEmail(account_email)
-  if (!accountData) {
-    req.flash("notice", "Please check your credentials and try again.")
-    res.status(400).render("account/login", {
-      title: "Login",
-      nav,
-      errors: null,
-      account_email,
-      messages: res.locals.messages,
-    })
-    return
-  }
-  try {
-    if (await bcrypt.compare(account_password, accountData.account_password)) {
-      delete accountData.account_password
-      req.session.accountData = accountData
-      res.locals.loggedin = 1
-      res.locals.accountData = accountData
-      req.flash("success", "You're logged in!")
-      res.redirect("/account/")
-    } else {
-      req.flash("notice", "Please check your credentials and try again.")
-      res.status(400).render("account/login", {
-        title: "Login",
-        nav,
-        errors: null,
-        account_email,
-        messages: res.locals.messages,
-      })
-    }
-  } catch (error) {
-    return new Error('Access Forbidden')
-  }
-}
-
-/* ****************************************
 *  Deliver account management view
 * *************************************** */
 accController.buildAccountManagement = async function(req, res, next) {
   try {
     let nav = await utilities.getNav()
+    const accountData = res.locals.accountData
+    
     res.render("account/management", {
       title: "Account Management",
       nav,
       errors: null,
-      accountData: res.locals.accountData,
-      messages: res.locals.messages,
+      accountData,
+      messages: res.locals.messages
     })
   } catch (error) {
     next(error)
