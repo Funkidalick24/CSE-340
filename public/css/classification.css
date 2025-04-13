@@ -1,55 +1,55 @@
 /* Classification Grid Styles */
 .inventory-display {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 1rem;
-    list-style: none;
-    margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+  list-style: none;
+  margin: 0;
 }
 
 .inventory-display li {
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 }
 
 .inventory-display li:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 .inventory-display a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    padding: 1rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 1rem;
 }
 
 .inventory-display img {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
 }
 
 .inventory-display h2 {
-    margin: 0.5rem 0;
-    font-size: 1.2rem;
-    color: #333;
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  color: #333;
 }
 
 .inventory-display p {
-    margin: 0;
-    color: #666;
-    font-weight: bold;
+  margin: 0;
+  color: #666;
+  font-weight: bold;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .inventory-display {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-    }
+  .inventory-display {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
 }
 
 /* Vehicle Detail View Styles */
@@ -60,14 +60,14 @@
   padding: 1rem;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .vehicle-image img {
   width: 100%;
   height: auto;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .vehicle-info {

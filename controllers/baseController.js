@@ -1,20 +1,20 @@
-const utilities = require("../utilities/")
+const utilities = require("../utilities/");
 
 const baseController = {
   async buildHome(req, res, next) {
     try {
-      const nav = await utilities.getNav()
-      req.flash("notice", "This is a flash message.")
+      const nav = await utilities.getNav();
+      req.flash("notice", "This is a flash message.");
       res.render("index", {
         title: "Home",
         nav,
         errors: null,
-        messages: res.locals.messages
-      })
+        messages: res.locals.messages,
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   },
-}
+};
 
-module.exports = baseController
+module.exports = baseController;

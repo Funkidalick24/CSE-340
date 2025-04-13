@@ -8,11 +8,11 @@
 }
 
 body {
-  background-image: url('/images/site/small_check.jpg');
+  background-image: url("/images/site/small_check.jpg");
   background-attachment: fixed;
 }
 
-.tools{
+.tools {
   text-decoration: none;
   color: #3a3a3a;
 }
@@ -70,7 +70,7 @@ nav ul li a:hover {
 /* Hero section base styles */
 .hero {
   position: relative;
-  background-image: url('/images/vehicles/delorean.jpg');
+  background-image: url("/images/vehicles/delorean.jpg");
   background-size: cover;
   background-position: center;
   height: 250px;
@@ -166,6 +166,35 @@ nav ul li a:hover {
   color: #4c96d7;
 }
 
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 1rem;
+}
+
+.header-links a {
+  color: #333;
+  text-decoration: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.header-links a:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
+.header-links a[href="/account/management"] {
+  font-weight: bold;
+  color: #0066cc;
+}
+
+.header-links a[href="/account/logout"] {
+  color: #cc0000;
+}
+
 /* Error page styles */
 .error-container {
   max-width: 600px;
@@ -173,7 +202,7 @@ nav ul li a:hover {
   padding: 2rem;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .error-container h2 {
@@ -325,7 +354,7 @@ nav ul li a:hover {
   padding: 2rem;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .register-form {
@@ -340,6 +369,17 @@ nav ul li a:hover {
   margin-top: 0.25rem;
 }
 
+.password-rules ul {
+  margin-left: 1.5rem;
+  list-style-type: disc;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.password-rules li {
+  margin: 0.25rem 0;
+}
+
 .register-links {
   margin-top: 1.5rem;
   text-align: center;
@@ -352,6 +392,19 @@ nav ul li a:hover {
 
 .register-links a:hover {
   text-decoration: underline;
+}
+
+/* Account Update Styles */
+.register-container form + form {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.register-container h2 {
+  margin-bottom: 1rem;
+  color: #374151;
+  font-size: 1.25rem;
 }
 
 /* Form validation styles */
@@ -393,7 +446,10 @@ nav ul li a:hover {
   padding: 2rem;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .management-links {
@@ -416,6 +472,38 @@ nav ul li a:hover {
 
 .btn:hover {
   background-color: #3182ce;
+}
+
+/* Delete confirmation styles */
+.delete-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.delete-form input[readonly] {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.delete-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-cancel {
+  background-color: #6b7280;
+}
+
+.notice {
+  color: #dc2626;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 /* Tablet Styles */
@@ -557,7 +645,7 @@ footer {
   background-color: #fff;
   padding: 2rem;
   margin-top: 2rem;
-  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -641,4 +729,28 @@ footer {
 
 .form-actions button:hover {
   background-color: #3182ce;
+}
+
+/* Account and Management Link Styles */
+.account-link, .management-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #0066cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin: 1rem 0;
+  transition: background-color 0.3s ease;
+}
+
+.account-link:hover, .management-link:hover {
+  background-color: #0052a3;
+}
+
+.management-link {
+  background-color: #28a745;
+}
+
+.management-link:hover {
+  background-color: #218838;
 }

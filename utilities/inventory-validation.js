@@ -1,6 +1,6 @@
-const utilities = require(".")
-const { body, validationResult } = require("express-validator")
-const validate = {}
+const utilities = require(".");
+const { body, validationResult } = require("express-validator");
+const validate = {};
 
 /*  **********************************
  *  Classification Validation Rules
@@ -11,9 +11,9 @@ validate.classificationRules = () => {
       .trim()
       .isLength({ min: 1 })
       .matches(/^[a-zA-Z0-9]+$/)
-      .withMessage("Classification name can only contain letters and numbers.")
-  ]
-}
+      .withMessage("Classification name can only contain letters and numbers."),
+  ];
+};
 
 /*  **********************************
  *  Inventory Validation Rules
@@ -69,29 +69,29 @@ validate.inventoryRules = () => {
     body("inv_color")
       .trim()
       .isLength({ min: 1 })
-      .withMessage("Please provide a vehicle color.")
-  ]
-}
+      .withMessage("Please provide a vehicle color."),
+  ];
+};
 
 /* ******************************
  * Check data and return errors
  * ***************************** */
 validate.checkClassificationData = async (req, res, next) => {
-  const { classification_name } = req.body
-  let errors = []
-  errors = validationResult(req)
+  const { classification_name } = req.body;
+  let errors = [];
+  errors = validationResult(req);
   if (!errors.isEmpty()) {
-    let nav = await utilities.getNav()
+    let nav = await utilities.getNav();
     res.render("inventory/add-classification", {
       errors,
       title: "Add Classification",
       nav,
       classification_name,
-    })
-    return
+    });
+    return;
   }
-  next()
-}
+  next();
+};
 
 /* ******************************
  * Check inventory data and return errors
@@ -107,13 +107,14 @@ validate.checkInventoryData = async (req, res, next) => {
     inv_thumbnail,
     inv_price,
     inv_miles,
-    inv_color
-  } = req.body
-  let errors = []
-  errors = validationResult(req)
+    inv_color,
+  } = req.body;
+  let errors = [];
+  errors = validationResult(req);
   if (!errors.isEmpty()) {
-    let nav = await utilities.getNav()
-    let classificationList = await utilities.buildClassificationList(classification_id)
+    let nav = await utilities.getNav();
+    let classificationList =
+      await utilities.buildClassificationList(classification_id);
     res.render("inventory/add-inventory", {
       errors,
       title: "Add Vehicle",
@@ -127,11 +128,55 @@ validate.checkInventoryData = async (req, res, next) => {
       inv_thumbnail,
       inv_price,
       inv_miles,
-      inv_color
-    })
-    return
+      inv_color,
+    });
+    return;
   }
-  next()
-}
+  next();
+};
 
-module.exports = validate
+/* ******************************
+ * Update inventory data and return errors
+ * ***************************** */
+validate.updateInventoryData = async (req, res, next) => {
+  const {
+    classification_id,
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+  } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    let classificationList =
+      await utilities.buildClassificationList(classification_id);
+    res.render("inventory/add-inventory", {
+      errors,
+      title: "Add Vehicle",
+      nav,
+      classificationList,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+    });
+    return;
+  }
+  next();
+};
+
+module.exports = validate;
