@@ -1,15 +1,33 @@
-<% if (title) { %>
-  <h1><%= title %></h1>
-<% } else {
-  res.redirect('/')
-} %>
+<main>
+    <% if (title) { %>
+        <h1><%= title %></h1>
+    <% } %>
 
-<%- detail %>
+    <%- messages() %>
 
-<% if (errors) { %>
-  <ul class="notice">
-  <% errors.array().forEach(error => { %>
-    <li><%= error.msg %></li>
-  <% }) %>
-  </ul>
-<% } %>
+    <%- detail %>
+
+    <% if (locals.vehicleData) { %>
+        <div class="vehicle-actions">
+            <a href="/inv/compare?vehicle1=<%= vehicleData.inv_id %>&returnId=<%= vehicleData.inv_id %>" class="compare-btn">
+                Compare Vehicle
+            </a>
+        </div>
+    <% } %>
+</main>
+
+<!-- Popup Structure -->
+<div id="compareOverlay" class="popup-overlay"></div>
+<div id="comparePopup" class="compare-popup">
+    <button type="button" class="close-popup" onclick="closeComparePopup()">×</button>
+    <div class="compare-controls">
+        <select id="vehicleSelect">
+            <option value="">Select a vehicle to compare</option>
+        </select>
+    </div>
+    <div id="compareContent"></div>
+</div>
+
+<!-- Make sure script is loaded after DOM -->
+<script src="/js/comparison.js" defer></script>
+

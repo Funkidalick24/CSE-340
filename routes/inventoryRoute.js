@@ -15,6 +15,14 @@ router.get(
   utilities.handleErrors(invController.buildByInventoryId),
 );
 
+router.get("/vehicles", 
+  utilities.handleErrors(invController.getAllVehicles)
+);
+
+router.get("/vehicle/:id", 
+  utilities.handleErrors(invController.getVehicleById)
+);
+
 // Protected management routes
 router.get(
   "/",
@@ -89,6 +97,15 @@ router.post(
   utilities.checkLogin,
   utilities.checkAdminAuthorization,
   utilities.handleErrors(invController.deleteInventory),
+);
+
+// Comparison routes
+router.get("/compare", 
+  utilities.handleErrors(invController.buildComparison)
+);
+
+router.get("/add-compare/:inv_id", 
+  utilities.handleErrors(invController.addToCompare)
 );
 
 module.exports = router;

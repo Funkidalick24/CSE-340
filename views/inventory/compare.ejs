@@ -1,0 +1,46 @@
+<main class="compare-main">
+    <div class="comparison-header">
+        <h1><%= title %></h1>
+        <% if (returnId) { %>
+            <a href="/inv/detail/<%= returnId %>" class="back-btn">
+                ← Back to Vehicle
+            </a>
+        <% } %>
+    </div>
+
+    <%- messages() %>
+
+    <div class="comparison-container">
+        <!-- Left Vehicle Panel -->
+        <div class="vehicle-panel">
+            <h2>Select First Vehicle</h2>
+            <select id="firstVehicle" class="vehicle-select" onchange="updateFirstVehicle(this.value)">
+                <option value="">Choose a vehicle...</option>
+                <% vehicles.forEach(vehicle => { %>
+                    <option value="<%= vehicle.inv_id %>" 
+                            <%= vehicle.inv_id === parseInt(preSelectedId) ? 'selected' : '' %>>
+                        <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>
+                    </option>
+                <% }) %>
+            </select>
+            <div id="firstVehicleDetails" class="vehicle-details"></div>
+        </div>
+
+        <!-- Right Vehicle Panel -->
+        <div class="vehicle-panel">
+            <h2>Select Second Vehicle</h2>
+            <select id="secondVehicle" class="vehicle-select" onchange="updateSecondVehicle(this.value)">
+                <option value="">Choose a vehicle...</option>
+                <% vehicles.forEach(vehicle => { %>
+                    <option value="<%= vehicle.inv_id %>">
+                        <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>
+                    </option>
+                <% }) %>
+            </select>
+            <div id="secondVehicleDetails" class="vehicle-details"></div>
+        </div>
+    </div>
+</main>
+
+<script src="/js/comparison.js"></script>
+

@@ -754,3 +754,233 @@ footer {
 .management-link:hover {
   background-color: #218838;
 }
+
+/* Comparison Table Styles */
+.compare-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: white;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.comparison-table thead th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.feature-name {
+  font-weight: bold;
+  background-color: #f9f9f9;
+  width: 120px;
+}
+
+.feature-value {
+  min-width: 200px;
+}
+
+.vehicle-column {
+  text-align: center;
+  background-color: #e9ecef;
+}
+
+.comparison-table tr:nth-child(even) .feature-value {
+  background-color: #fafafa;
+}
+
+.vehicle-header {
+  text-align: center;
+}
+
+.vehicle-header img {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+
+.vehicle-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.comparison-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.vehicle-actions {
+  margin: 1rem 0;
+}
+
+.compare-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.compare-btn:hover {
+  background-color: #45a049;
+}
+
+.compare-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.close-popup {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-popup:hover {
+  color: #000;
+}
+
+.compare-controls {
+  margin-bottom: 1rem;
+}
+
+.compare-controls select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.remove-compare {
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.remove-compare:hover {
+  background: #cc0000;
+}
+
+/* Comparison Container Styles */
+.comparison-container {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.vehicle-panel {
+  flex: 1;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.vehicle-select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.vehicle-details {
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.vehicle-details table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vehicle-details th,
+.vehicle-details td {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.vehicle-details th {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Comparison Header Styles */
+.comparison-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #6c757d;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  background-color: #5a6268;
+  color: white;
+}

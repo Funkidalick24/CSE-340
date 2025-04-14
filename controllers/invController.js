@@ -19,27 +19,39 @@ invCont.buildByClassificationId = async function (req, res, next) {
   });
 };
 
-/* ***************************
- *  Build vehicle detail view
- * ************************** */
-invCont.buildByInventoryId = async function (req, res, next) {
+/* ****************************************
+ *  Build vehicle by invId 
+ * *************************************** */
+async function buildByInventoryId(req, res, next) {
   try {
-    const inv_id = req.params.invId;
-    const vehicleData = await invModel.getVehicleById(inv_id);
-    const detail = utilities.buildVehicleDetail(vehicleData);
-    let nav = await utilities.getNav();
-    const title = `${vehicleData.inv_make} ${vehicleData.inv_model}`;
-    res.render("./inventory/detail", {
-      title,
-      nav,
-      detail,
-      errors: null,
-    });
+    const inv_id = req.params.invId
+    const vehicle = await invModel.getVehicleById(inv_id)
+
+    if (vehicle) {
+      let nav = await utilities.getNav()
+      const vehicleDetail = await utilities.buildVehicleDetail(vehicle)
+      res.render("./inventory/detail", {
+        title: vehicle.inv_make + ' ' + vehicle.inv_model,
+        nav,
+        detail: vehicleDetail,  // Changed from grid to detail
+        vehicleData: vehicle,
+        errors: null
+      })
+    } else {
+      const vehicleDetail = await utilities.buildVehicleDetail({})
+      let nav = await utilities.getNav()
+      req.flash("notice", "Sorry, we could not find that vehicle")
+      res.status(404).render("./inventory/detail", {
+        title: "Vehicle Not Found",
+        nav,
+        detail: vehicleDetail,  // Changed from grid to detail
+        errors: null
+      })
+    }
   } catch (error) {
-    console.error("buildByInventoryId error: " + error);
-    next(error);
+    next(error)
   }
-};
+}
 
 invCont.buildAddClassification = async function (req, res, next) {
   try {
@@ -303,4 +315,134 @@ invCont.deleteInventory = async function (req, res, next) {
   }
 }
 
-module.exports = invCont;
+/* ****************************************
+ *  Build Vehicle Comparison View
+ * *************************************** */
+const buildComparisonView = async (req, res) => {
+  try {
+    const vehicles = []
+    const compareList = req.session.compareList || []
+    let nav = await utilities.getNav()
+
+    // Get vehicle data for each ID in compare list
+    for (const id of compareList) {
+      const vehicle = await invModel.getVehicleById(id)
+      if (vehicle) {
+        vehicles.push(vehicle)
+      }
+    }
+
+    // If no vehicles, redirect
+    if (!vehicles.length) {
+      req.flash("notice", "No vehicles selected for comparison")
+      return res.redirect("/inv")
+    }
+
+    res.render("./inventory/compare", {
+      title: "Vehicle Comparison",
+      nav,
+      vehicles,
+      errors: null
+    })
+  } catch (error) {
+    req.flash("notice", "Error building comparison view")
+    res.redirect("/inv")
+  }
+}
+
+/* ****************************************
+ *  Add Vehicle to Comparison
+ * *************************************** */
+const addToCompare = async (req, res) => {
+  try {
+    const { inv_id } = req.params
+
+    if (!req.session.compareList) {
+      req.session.compareList = []
+    }
+
+    if (req.session.compareList.length >= 3) {
+      return res.json({ 
+        error: "Can only compare up to 3 vehicles" 
+      })
+    }
+
+    if (!req.session.compareList.includes(inv_id)) {
+      req.session.compareList.push(inv_id)
+    }
+
+    const vehicles = await Promise.all(
+      req.session.compareList.map(id => invModel.getVehicleById(id))
+    )
+
+    res.json({ vehicles })
+  } catch (error) {
+    res.json({ error: "Error adding vehicle to comparison" })
+  }
+}
+
+/* ****************************************
+ *  Get all vehicles
+ * *************************************** */
+async function getAllVehicles(req, res) {
+  try {
+    const vehicles = await invModel.getAllVehicles()
+    console.log("Vehicles fetched:", vehicles.length)
+    res.json({ vehicles })
+  } catch (error) {
+    console.error("getAllVehicles error:", error)
+    res.json({ vehicles: [] })
+  }
+}
+
+/* ****************************************
+ *  Get vehicle by ID
+ * *************************************** */
+async function getVehicleById(req, res) {
+  try {
+    const vehicle = await invModel.getVehicleById(req.params.id)
+    console.log("Vehicle data fetched:", vehicle)
+    res.json({ vehicle })
+  } catch (error) {
+    console.error("getVehicleById error:", error)
+    res.json({ vehicle: null })
+  }
+}
+
+/* ***************************
+ * Build comparison view
+ * ************************** */
+async function buildComparison(req, res) {
+    try {
+        let nav = await utilities.getNav()
+        const vehicles = await invModel.getAllVehicles()
+        const preSelectedId = req.query.vehicle1
+        const returnId = req.query.returnId
+        
+        console.log("Return ID:", returnId) // Debug log
+        
+        res.render("./inventory/compare", {
+            title: "Compare Vehicles",
+            nav,
+            vehicles,
+            preSelectedId,
+            returnId: parseInt(returnId), // Ensure returnId is a number
+            errors: null
+        })
+    } catch (error) {
+        console.error("Error building comparison view:", error)
+        req.flash("notice", "Error loading comparison page")
+        res.redirect("/")
+    }
+}
+
+// Add to module exports
+module.exports = {
+  ...invCont,
+  buildComparisonView,
+  addToCompare,
+  buildByInventoryId,
+  getAllVehicles,
+  getVehicleById,
+  buildComparison
+}

@@ -159,6 +159,20 @@ async function deleteInventory(inv_id) {
   }
 }
 
+/* ***************************
+ * Get all vehicles
+ * ************************** */
+async function getAllVehicles() {
+  try {
+    const sql = "SELECT * FROM public.inventory ORDER BY inv_id ASC"
+    const result = await pool.query(sql)
+    return result.rows
+  } catch (error) {
+    console.error("getAllVehicles error: " + error)
+    return []
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
@@ -167,4 +181,5 @@ module.exports = {
   addInventory,
   updateInventory,
   deleteInventory, // Add to exports
+  getAllVehicles,
 };
